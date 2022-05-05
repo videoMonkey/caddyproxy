@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      # - $PWD/index.html:/usr/share/caddy/index.html
+      # - $PWD/site:/srv
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - ACME_EMAIL=${ACME_EMAIL}
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+
+# any other docker services on this network can be referred to by name
+# and their default port without exposing the port to the default network
+networks:
+  default:
+    external:
+      name: caddyproxy
