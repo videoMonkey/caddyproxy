@@ -1,0 +1,34 @@
+# the global block 
+# https://caddyserver.com/docs/caddyfile/options
+{
+	email {$ACME_EMAIL}
+}
+
+# wildcard certs common practices
+# https://caddyserver.com/docs/caddyfile/patterns#wildcard-certificates
+*.local.cabra.cx {
+
+	# The TLS Block 
+	# https://caddyserver.com/docs/caddyfile/directives/tls
+	tls {$ACME_EMAIL} {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+		resolvers 1.1.1.1
+	}
+	
+#	tls internal
+
+	@test host test.local.cabra.cx 
+	handle @test {
+		respond "Hello World!!!!"
+	}
+
+	@plex host plex.local.cabra.cx 
+	reverse_proxy @plex 192.168.1.10:32400
+
+	@music host music.local.cabra.cx 
+	reverse_proxy @music navidrome:4533
+
+	@pihole host pihole.local.cabra.cx 
+	reverse_proxy @pihole  192.168.1.2:8080
+
+}
