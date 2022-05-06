@@ -8,6 +8,7 @@ Any docker containers on the 'caddyproy' network can be referenced by service na
 
 1. Clone this repo
 2. In your cloudflare dashboard create a token that has Zone->DNS->Edit permissions.
+3. you need to make sure that you have a DNS entry for your proxied services pointint to the server where docker is running. 
 3. make a `.env` file at the same level as the docker-compose.yml file with the two environment variables listed in the docker-compose.yml file
 4. Edit the Caddyfile to reflect the hosts and reverse proxies you want
 5. Run `docker-compose up -d` it's going to complain either about not having created a network or a volume, follow the instructions docker gives you to resolve the problem.
@@ -16,10 +17,6 @@ Any docker containers on the 'caddyproy' network can be referenced by service na
 8. Getting the certs will take 30 seconds or less, you can use the `docker container logs` command from below to check if it was successful.
 
 I think that is all. 
-
-## Broken
-
-- TODO: For some reason changes to my caddy file are not reflected in the container without rebuilding it
 
 ## Commands I find useful
 
